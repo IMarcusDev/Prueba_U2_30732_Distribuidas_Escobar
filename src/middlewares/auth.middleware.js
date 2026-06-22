@@ -1,12 +1,11 @@
 const jwtService = require('../services/jwt.service');
-
 function authMiddleware(req, res, next) {
   const authHeader = req.headers['authorization'];
 
   if (!authHeader) {
     return res.status(401).json({
       error: 'Acceso no autorizado',
-      message: 'Falta la cabecera de autenticación'
+      message: 'Falta la cabecera Authorization en la petición.'
     });
   }
 
@@ -14,7 +13,7 @@ function authMiddleware(req, res, next) {
   if (parts.length !== 2 || parts[0] !== 'Bearer') {
     return res.status(401).json({
       error: 'Acceso no autorizado',
-      message: 'El formato de cabecera es incorrecto'
+      message: 'Formato de cabecera de autenticación debe ser Bearer.'
     });
   }
 
@@ -30,13 +29,13 @@ function authMiddleware(req, res, next) {
     if (error.name === 'TokenExpiredError') {
       return res.status(401).json({
         error: 'Token expirado',
-        message: 'La sesión ha expirado'
+        message: 'La sesión ha expirado. Por favor, solicite un nuevo token.'
       });
     }
 
     return res.status(403).json({
       error: 'Token inválido',
-      message: 'El token no es válido o ha sido manipulado.'
+      message: 'La firma del token no es válida o ha sido manipulado.'
     });
   }
 }
