@@ -1,11 +1,5 @@
-const transactionService = require('../services/transaction.monolith.service');
+const { transactionService } = require('../transaction-container');
 
-/**
- * Endpoint para obtener el saldo actual de una cuenta (Alpha).
- * GET /v1/account-alpha/balance
- * 
- * Se espera recibir el parámetro 'accountId' por query string o desde el req.user (si ya está autenticado).
- */
 function getBalance(req, res) {
   try {
     const accountId = req.query.accountId;
@@ -13,7 +7,7 @@ function getBalance(req, res) {
     if (!accountId) {
       return res.status(400).json({
         error: 'Petición incorrecta',
-        message: 'Debe proporcionar un parámetro accountId por query string (ej: ?accountId=ACC-12345).'
+        message: 'Se debe pasa por parametro el accountId'
       });
     }
 
